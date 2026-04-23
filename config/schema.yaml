@@ -10,7 +10,7 @@ columns:
   - Annual_Premium: float
   - Policy_Sales_Channel: float
   - Vintage: int
-  - Response: int
+  - Response: float
 
 
 numerical_columns:
