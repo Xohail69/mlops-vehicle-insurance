@@ -1,3 +1,5 @@
+import json
+import os
 import sys
 from typing import Tuple
 
@@ -101,6 +103,18 @@ class ModelTrainer:
             my_model = MyModel(preprocessing_object=preprocessing_obj, trained_model_object=trained_model)
             save_object(self.model_trainer_config.trained_model_file_path, my_model)
             logging.info("Saved final model object that includes both preprocessing and the trained model")
+
+            # Save metrics report to JSON
+            report_file_path = self.model_trainer_config.model_trainer_report_file_path
+            os.makedirs(os.path.dirname(report_file_path), exist_ok=True)
+            report = {
+                "f1_score": metric_artifact.f1_score,
+                "precision_score": metric_artifact.precision_score,
+                "recall_score": metric_artifact.recall_score
+            }
+            with open(report_file_path, "w") as f:
+                json.dump(report, f, indent=4)
+            logging.info(f"Model metrics report saved to: {report_file_path}")
 
             # Create and return the ModelTrainerArtifact
             model_trainer_artifact = ModelTrainerArtifact(
